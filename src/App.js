@@ -67,7 +67,7 @@ function App() {
     <div className='all'>
       <div className='main'>
         <Box title="YOU" item={userSelect} result={result} />
-        <Box title="COMPUTER" item={computerSelect} result={result == "tie" ? "tie" : result == "win" ? "lose" : "win"} />
+        <Box title="COMPUTER" item={computerSelect} result={result == "" ? "" : result == "tie" ? "tie" : result == "win" ? "lose" : "win"} />
       </div>
 
       <div className='main buttons'>
