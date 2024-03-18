@@ -12,32 +12,65 @@ import { useState } from 'react';
 
 const choice = {
   rock: {
-    name: "Rock",
+    name: "rock",
     img: "https://nationaltoday.com/wp-content/uploads/2021/08/National-Pet-Rock-Day-1200x834.jpg"
   },
   scissors: {
-    name: "Scissor",
+    name: "scissor",
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZwNuMZFZH69OejlexMIWjjsNrhtWGQFGy8OkIPDEl-XxZUcZqqqKP7MuHkNbcR8xpZwM&usqp=CAU"
   },
   paper: {
-    name: "Paper",
+    name: "paper",
     img: "https://m.media-amazon.com/images/I/61OorFhm6SL._AC_UF894,1000_QL80_.jpg"
   }
 }
+
 function App() {
   const [userSelect, setuserSelect] = useState(null)
+  const [computerSelect, setComputerSelect] = useState(null)
+  const [result, setResult] = useState("")
 
   const play = (userChoice) => {
     setuserSelect(choice[userChoice])
+    let computerChoice = randomChoice()
+    setComputerSelect(computerChoice)
+    setResult(judgment(choice[userChoice], computerChoice))
+  }
+
+  // user == computer 비김(tie)
+  // user == rock, computer == scissor user win
+  // user == rock, computer == paper user lose
+  // user == paper, computer == scissor user lose
+  // user == paper, computer == rock user win
+  // user == scissor, computer == rock user win
+  // user == scissor, computer == paper user lose
+
+  const judgment = (user, computer) => {
+    console.log("user:", user.name, "com: ", computer.name)
+
+    if (user.name == computer.name) {
+      return "tie"
+    }
+    else if (user.name == "rock") return computer.name == "scissor" ? "win" : "lose";
+    else if (user.name == "paper") return computer.name == "scissor" ? "lose" : "win";
+    else if (user.name == "scissor") return computer.name == "rock" ? "win" : "lose";
+  }
+
+  const randomChoice = () => {
+    let itemArray = Object.keys(choice)
+    let randomItem = Math.floor(Math.random() * itemArray.length)
+    let final = itemArray[randomItem]
+    return choice[final]
   }
 
   return (
-    <div>
+    <div className='all'>
       <div className='main'>
-        <Box title="YOU" item={userSelect} />
-        {/* <Box title="COMPUTER" /> */}
+        <Box title="YOU" item={userSelect} result={result} />
+        <Box title="COMPUTER" item={computerSelect} result={result == "tie" ? "tie" : result == "win" ? "lose" : "win"} />
       </div>
-      <div className='main'>
+
+      <div className='main buttons'>
         <button onClick={() => play("scissors")}>가위</button>
         <button onClick={() => play("rock")}>바위</button>
         <button onClick={() => play("paper")}>보</button>
